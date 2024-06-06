@@ -87,7 +87,7 @@ def fetch_book_details(isbn):
 
 
 def main():
-    output_file_path = "book_details.csv"
+    output_file_path = "Book_output.csv"
 
     input_df = pd.read_csv(r"C:\Users\Pranjal Sharma\Downloads\input_list (1).csv")
 
