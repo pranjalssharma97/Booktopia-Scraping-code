@@ -74,7 +74,7 @@ def fetch_book_details(isbn):
         print(f"Failed to fetch the page for ISBN: {isbn}")
         return {
                 "ISBN13": isbn,
-                "Title of the Book":'',
+                "Title of the Book":'failed to fetch page',
                 "Author/s":'',
                 "Book type":'',
                 "Original Price (RRP)":'',
