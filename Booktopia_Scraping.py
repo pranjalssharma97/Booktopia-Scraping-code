@@ -3,7 +3,6 @@
 
 # In[ ]:
 
-
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -75,7 +74,7 @@ def fetch_book_details(isbn):
         print(f"Failed to fetch the page for ISBN: {isbn}")
         return {
                 "ISBN13": isbn,
-                "Title of the Book":'failed to fetch page',
+                "Title of the Book":'',
                 "Author/s":'',
                 "Book type":'',
                 "Original Price (RRP)":'',
@@ -86,3 +85,45 @@ def fetch_book_details(isbn):
                 "No. of Pages":'',
             }
 
+
+def main():
+    output_file_path = "book_details.csv"
+
+    input_df = pd.read_csv(r"C:\Users\Pranjal Sharma\Downloads\input_list (1).csv")
+
+    # Create an empty DataFrame with the required columns
+    output_df = pd.DataFrame(columns=["ISBN13", "Title of the Book", "Author/s", "Book type", "Original Price (RRP)",
+                                      "Discounted price", "ISBN-10", "Published Date", "Publisher", "No. of Pages"])
+
+    # Save the empty DataFrame with headers initially
+    output_df.to_csv(output_file_path, index=False)
+    input_df = input_df[0:]
+    # Keep track of the last written line
+    for _, row in input_df.iterrows():
+        print(_)
+        isbn = row["ISBN13"]
+        book_details = fetch_book_details(isbn)
+        if book_details:
+            output_df = pd.DataFrame([book_details])
+        else:
+            title = 'Sample Notification'
+            message = 'Title of the Book": "Book not found on the website.'
+            timeout = 10  # Duration in seconds for the notification to stay on screen
+
+            # Display the notification
+            notification.notify(
+                title=title,
+                message=message,
+                timeout=timeout
+            )
+            output_df = pd.DataFrame([{"Title of the Book": "Book not found on the website."}])
+
+        # Append the new row to the CSV file
+        with open(output_file_path, 'a', newline='') as f:
+            output_df.to_csv(f, header=f.tell() == 0, index=False)
+
+    print(f"Book details saved to {output_file_path}")
+
+
+if __name__ == "__main__":
+    main()
